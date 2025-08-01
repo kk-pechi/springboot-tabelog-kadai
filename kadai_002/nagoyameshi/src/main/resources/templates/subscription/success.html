@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <div th:replace="~{fragment :: meta}"></div>
+    <div th:replace="~{fragment :: styles}"></div>
+    <title>NAGOYAMESHI | 有料プラン登録完了</title>
+</head>
+	<body>
+			<div class="nagoyameshi-wrapper">
+			    <div th:replace="~{fragment :: header}"></div>
+				<main>
+				  <div class="container pb-5 nagoyameshi-container">
+				    <div class="row justify-content-center">
+				      <div class="col-xl-5 col-lg-6 col-md-8">
+				        <nav class="my-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+				          <ol class="breadcrumb mb-0">
+				            <li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+				            <li class="breadcrumb-item active" aria-current="page">有料プラン登録</li>
+				          </ol>
+				        </nav>
+
+				        <h1 class="mb-4 text-center">ご登録ありがとうございます</h1>
+
+				        <p class="text-center my-3">有料プランへの登録が完了しました。</p>
+				        <p class="text-center my-3">今後もサービスをお楽しみください。</p>
+
+				        <div class="text-center mt-5">
+				          <a th:href="@{/}" class="btn shadow-sm w-50 nagoyameshi-btn">ホームに戻る</a>
+				        </div>
+
+				      </div>
+				    </div>
+				  </div>
+				</main>
+				 <div th:replace="~{fragment :: footer}"></div>
+			</div>
+		
+		<div th:replace="~{fragment :: scripts}"></div>
+	</body>
+</html>
