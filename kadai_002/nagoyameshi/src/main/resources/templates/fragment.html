@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+   <head>
+       <!-- meta要素の部品化 -->
+       <div th:fragment="meta" th:remove="tag">
+           <meta charset="UTF-8">
+           <meta name="viewport" content="width=device-width, initial-scale=1">
+       </div>
+
+       <!-- link要素の部品化 -->
+       <div th:fragment="styles" th:remove="tag">
+           <!-- Bootstrap -->
+           <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+           <!-- Google Fonts -->
+           <link rel="preconnect" href="https://fonts.googleapis.com">
+           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+           <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+
+           <!-- flatpickr CSS -->
+           <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+		   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+           <!-- CSSファイル -->
+           <link th:href="@{/css/style.css}" rel="stylesheet" >
+       </div>
+       
+       <title>部品化用のHTMLファイル</title>     
+   </head>
+   <body>
+	<!-- ヘッダーの部品化 -->
+	<div th:fragment="header" th:remove="tag">
+	    <nav class="navbar navbar-expand-md navbar-light bg-white nagoyameshi-navbar">
+	        <div class="container samuraitravel-container">
+				 <div class="nagoyameshi-title">
+					<p class="sub-title">名古屋の人気B級グルメのお店がすぐに見つかる！</p>
+					 <a class="navbar-brand" th:href="@{/}"><span class ="title-front">NAGOYA</span><span class ="title-rear">MESHI</span></a>  
+				 </div>
+				 
+			   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			       <span class="navbar-toggler-icon"></span>
+			   </button>
+
+			   <div class="collapse navbar-collapse" id="navbarSupportedContent">                                    
+			       <ul class="navbar-nav ms-auto">   
+					 
+			           <!-- 未ログインであれば表示する -->
+					   <li class="nav-item" sec:authorize="isAnonymous()">
+					        <a class="nav-link" th:href="@{/signup}">会員登録</a>
+					   </li>
+					   
+			           <li class="nav-item" sec:authorize="isAnonymous()">
+			               <a class="nav-link" th:href="@{/login}">ログイン</a>
+			           </li> 
+	                                               
+
+			           <!-- ログイン済みであれば表示する --> 
+			           <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_USER')">
+			               <a id="navbarDropdownGeneral" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+			                   <span th:if="${userName}" th:text="${userName}"></span>
+			               </a>
+
+			               <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownGeneral">   
+							<a class="dropdown-item nagoyameshi-dropdown-item" th:href="@{/user}">会員情報</a>
+							<a class="dropdown-item nagoyameshi-dropdown-item" th:href="@{/subscription/plan}">有料プラン</a>
+
+							<div class="dropdown-divider"></div>
+							                                                               
+			                   <a class="dropdown-item nagoyameshi-dropdown-item" th:href="@{/logout}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+			                       ログアウト
+			                   </a>
+			                   <form class="d-none" id="logout-form" th:action="@{/logout}" method="post"></form>                                     
+			               </div>
+			           </li> 
+					   
+					   <!-- ログイン済みかつ有料プラン会員であれば表示する --> 
+					   <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_PREMIUM')">
+					       <a id="navbarDropdownGeneral" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+					          <span th:if="${userName}" th:text="${userName}"></span>
+					       </a>
+
+					 		<div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownGeneral">
+								<a class="dropdown-item nagoyameshi-dropdown-item" th:href="@{/user}">会員情報</a> 
+							   	<a class="dropdown-item nagoyameshi-dropdown-item" th:href="@{/reservations}">予約一覧</a>
+							   	<a class="dropdown-item nagoyameshi-dropdown-item" th:href="@{/favorites}">お気に入り一覧</a>
+								<a class="dropdown-item nagoyameshi-dropdown-item" th:href="@{/subscription/edit}">お支払方法の変更</a>
+							   	<a class="dropdown-item nagoyameshi-dropdown-item" th:href="@{/subscription/cancel}">有料プラン解約</a>
+
+							<div class="dropdown-divider"></div>
+					   	                                                               
+					           <a class="dropdown-item nagoyameshi-dropdown-item" th:href="@{/logout}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+					               ログアウト
+					           </a>
+					           <form class="d-none" id="logout-form" th:action="@{/logout}" method="post"></form>                                     
+					       </div>
+					   </li>                       
+			               
+			           <!-- 管理者であれば表示する -->    
+			           <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+			               <a id="navbarDropdownAdmin" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+			                   管理者でログイン中
+			               </a>
+
+						   <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownAdmin">
+						       <a class="dropdown-item negoyameshi-dropdown-item" th:href="@{/admin/}">管理トップ</a>                                                                                            
+						       <a class="dropdown-item negoyameshi-dropdown-item" th:href="@{/admin/users}">会員管理</a>
+							   <a class="dropdown-item negoyameshi-dropdown-item" th:href="@{/admin/shops}">店舗管理</a>  
+							   <a class="dropdown-item negoyameshi-dropdown-item" th:href="@{/admin/categories}">カテゴリー管理</a>
+							   <a class="dropdown-item negoyameshi-dropdown-item" th:href="@{/admin/company}">会社概要管理</a>                                                                                                
+						                                 
+						       <div class="dropdown-divider"></div>
+			                   
+			                   <a class="dropdown-item nagoyameshi-dropdown-item" th:href="@{/logout}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+			                       ログアウト
+			                   </a>
+			                   <form class="d-none" id="logout-form" th:action="@{/logout}" method="post"></form> 
+			               </div>
+			           </li>                           
+			       </ul>       
+			   </div> 
+			                                                                     
+	        </div>
+	    </nav>
+	</div>
+
+       <!-- メインビジュアル -->
+       <div class="main-visual" th:fragment="main-visual" th:remove="tag">
+         <div class="container">
+           <img class="main-img" src="/images/index-main.webp" alt="名古屋を連想させる写真">
+         </div>
+       </div>
+
+       <!-- 店舗画像のプレビュー -->
+       <div th:fragment="imagePreviewScript">
+           <script>
+             document.addEventListener('DOMContentLoaded', function () {
+               const fileInput = document.getElementById('imageFileInput');
+               const preview = document.getElementById('newImagePreview');
+               const oldPreview = document.getElementById('imagePreview');
+
+               if (fileInput && preview) {
+                 fileInput.addEventListener('change', function (event) {
+                   const file = event.target.files[0];
+                   if (file) {
+                     const reader = new FileReader();
+                     reader.onload = function (e) {
+                       preview.src = e.target.result;
+                       preview.style.display = 'block';
+                       if (oldPreview) {
+                         oldPreview.style.display = 'none';
+                       }
+                     };
+                     reader.readAsDataURL(file);
+                   }
+                 });
+               }
+             });
+           </script>
+       </div>
+
+	   <!-- フッターの部品化 -->
+	   <div th:fragment="footer" th:remove="tag">
+	       <footer>
+	           <div class="footer-container">
+	               <div class="footer-title">
+	                   <a class="navbar-brand" th:href="@{/}">
+	                       <span class="footer-title-front">NAGOYA</span><span class="footer-title-rear">MESHI</span>
+	                   </a>
+	               </div>
+	               <div class="footer-company">
+	                   <a th:href="@{/company}" class="text-dark text-decoration-none">会社概要</a>
+	               </div>
+	               <p class="text-center text-muted small mb-0">&copy; NAGOYAMESHI All rights reserved.</p>
+	           </div>
+	       </footer>
+	   </div>
+
+       <!-- script要素の部品化 -->
+       <div th:fragment="scripts" th:remove="tag">
+           <!-- Bootstrap -->
+           <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+           <!-- flatpickr -->
+           <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+           <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+
+           <!-- スクロールスクリプト -->
+           <script>
+             document.addEventListener("DOMContentLoaded", function () {
+               const newWrapper = document.querySelector('.new-shops-wrapper');
+               document.getElementById('scrollRight')?.addEventListener('click', function () {
+                 newWrapper.scrollLeft += 400;
+               });
+               document.getElementById('scrollLeft')?.addEventListener('click', function () {
+                 newWrapper.scrollLeft -= 400;
+               });
+
+               const rankingWrapper = document.querySelector('.ranking-shops-wrapper');
+               document.getElementById('rankingScrollRight')?.addEventListener('click', function () {
+                 rankingWrapper.scrollLeft += 400;
+               });
+               document.getElementById('rankingScrollLeft')?.addEventListener('click', function () {
+                 rankingWrapper.scrollLeft -= 400;
+               });
+             });
+           </script>
+       </div>
+   </body>
+</html>

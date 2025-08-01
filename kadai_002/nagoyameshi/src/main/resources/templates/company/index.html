@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<head>
+		<div th:replace="~{fragment :: meta}"></div>
+		<div th:replace="~{fragment :: styles}"></div>
+		<title>NAGOYAMESHI | 会社概要</title>	
+	</head>
+      <body>
+           <div class="nagoyameshi-wrapper">
+   			<div th:replace="~{fragment :: header}"></div>
+   			
+   			<main>
+				<div class="container pt-4 pb-5 nagoyameshi-container">
+				  <div class="row justify-content-center">
+				    <div class="col-xxl-6 col-xl-7 col-lg-8 col-md-9 col-sm-10">
+	                          
+							  <nav class="my-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+							      <ol class="breadcrumb mb-0">
+							          <li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+							          <li class="breadcrumb-item active" aria-current="page">会社概要</li>
+							      </ol>
+							  </nav>
+							  
+      <h1 class="mb-4 text-center">会社概要</h1>  
+
+    <p><strong>会社名：</strong><span th:text="${company.name}"></span></p>
+    <p><strong>代表者：</strong><span th:text="${company.representative}"></span></p>
+    <p><strong>設立：</strong><span th:text="${company.establishedDate}"></span></p>
+    <p><strong>資本金：</strong><span th:text="${company.capital}"></span></p>
+    <p><strong>所在地：</strong><span th:text="${company.address}"></span></p>
+    <p><strong>電話番号：</strong><span th:text="${company.phoneNumber}"></span></p>
+    <p><strong>メールアドレス：</strong><span th:text="${company.email}"></span></p>
+    <p><strong>事業内容：</strong><span th:text="${company.description}"></span></p>
+	
+	
+        </main>
+	   
+			<div th:replace="~{fragment :: footer}"></div>
+		</div>
+			<div th:replace="~{fragment :: scripts}"></div>
+   </body>
+</html>
